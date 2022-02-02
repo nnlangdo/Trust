@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container-home">
+    <h1 class="text-center mb-5">NAME OF THE INSTITUTION</h1>
+<div class="row">
+    <div class="col-sm-6">Name of Donor: <span class="data-receipt">{{data.name}}</span></div>
+    <div class="col-sm-6">Address: <span class="data-receipt">{{data.address}}</span></div>
+</div>
+
+<div class="row">
+    <div class="col-sm-6">District: <span class="data-receipt">{{data.district}}</span></div>
+    <div class="col-sm-6">State: <span class="data-receipt">{{data.state}}</span></div>
+</div>
+
+<div class="row">
+    <div class="col-sm-6">Pincode: <span class="data-receipt">{{data.pin}}</span></div>
+    <div class="col-sm-6">Mobile: <span class="data-receipt">{{data.mobile}}</span></div>
+</div>
+
+<div class="row">
+    <div class="col-sm-6">Pan No:</div>
+    <div class="col-sm-6">:</div>
+</div>
+
+<div class="row">
+    <div class="col-sm-6">Date of Donation: <span class="data-receipt">{{data.date_created}}</span></div>
+    <div class="col-sm-6">Mode of Donation: <span class="data-receipt">{{data.mode_donation}}</span></div>
+</div>
+
+</div>
+{% endblock %}

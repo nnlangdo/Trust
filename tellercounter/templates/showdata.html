@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    {% for d in data%}
+    {{d.name | upper}}<br> <!--upper filters to upper case-->
+    {{d.name | lower}}<br> <!--upper filters to lower case-->
+    {{d.name | safe}} <br> <!--safe is used to render all tags-->
+    {{d.name | capfirst}}<br> <!--changes to capital each first letter of para-->
+    {{d.name | wordcount}} <br> <!--count no of words-->
+    {% endfor %}
+</body>
+</html>
