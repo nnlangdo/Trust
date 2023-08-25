@@ -1,44 +1,141 @@
 from django.http import HttpResponseRedirect
-from django.shortcuts import render
+from django.shortcuts import render,redirect,get_object_or_404
 from django.contrib import messages
-from .models import TellerCounter
-from .forms import TellerCounterForm
+from .models import District,Province,CashContributor,ChequeContributor,DraftContributor,KindContributor
+from .forms import CashContributorForm,ChequeContributorForm,DraftContributorForm,KindContributorForm
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
+def mode_donation(request):
+    mode_donation = request.GET.get('mode_donation')
+    context = {
+        'mode_donation':mode_donation,
+    }
+    return render(request, 'partials/mode_donation.html',context)
+
+def district(request):
+    province = request.GET.get('state')
+    districts = District.objects.filter(province=province)
+    context = {
+        'districts':districts,
+    }
+    return render(request, 'partials/district.html',context)
+@login_required
 def home(request):
-    form = TellerCounterForm(request.POST or None)
-    if request.method=="POST":
+    donations_cash_all = CashContributor.objects.all()
+    donations_cash_user = CashContributor.objects.filter(received_by=request.user)
+    donations_cheque_all = ChequeContributor.objects.all()
+    donations_cheque_user = ChequeContributor.objects.filter(received_by=request.user)
+    donations_draft_all = DraftContributor.objects.all()
+    donations_draft_user = DraftContributor.objects.filter(received_by=request.user)
+    donations_kind_all = KindContributor.objects.all()
+    donations_kind_user = KindContributor.objects.filter(received_by=request.user)
+    provinces = Province.objects.all()
+
+    context = {
+        'provinces':provinces,
+        'donations_cash_user':donations_cash_user,
+        'donations_cash_all':donations_cash_all,
+        'donations_cheque_all':donations_cheque_all,
+        'donations_cheque_user':donations_cheque_user,
+        'donations_draft_all':donations_draft_all,
+        'donations_draft_user':donations_draft_user,
+        'donations_kind_all':donations_kind_all,
+        'donations_kind_user':donations_kind_user,
+    }
+    return render(request, 'tellercounter/home.html', context)
+@login_required
+def add_cash(request):
+    provinces = Province.objects.all()
+    if request.method == 'POST':
+        form = CashContributorForm(request.POST)
         if form.is_valid():
-            name = form.cleaned_data['name']
-            address = form.cleaned_data['address']
-            district = form.cleaned_data['district']
-            state = form.cleaned_data['state']
-            pin = form.cleaned_data['pin']
-            mobile = form.cleaned_data['mobile']
-            mode_donation = form.cleaned_data['mode_donation']
-            amt_cash = form.cleaned_data['amt_cash']
-            cheque_no = form.cleaned_data['cheque_no']
-            micr_cheque = form.cleaned_data['micr_cheque']
-            draft_no = form.cleaned_data['draft_no']
-            micr_draft = form.cleaned_data['micr_draft']
-            kind_type = form.cleaned_data['kind_type']
-            kind_wgt = form.cleaned_data['kind_wgt']
-            kind_unit = form.cleaned_data['kind_unit']
-            comment = form.cleaned_data['comment']
-            data = TellerCounter(name=name,address=address,district=district,state=state,pin=pin,
-            mobile=mobile,mode_donation=mode_donation,amt_cash=amt_cash,cheque_no=cheque_no,micr_cheque=micr_cheque,draft_no=draft_no,micr_draft=micr_draft,
-            kind_type=kind_type,kind_wgt=kind_wgt,kind_unit=kind_unit,comment=comment)
-            
-            data.save()
-            return HttpResponseRedirect('/')
-        else:
-            form = TellerCounterForm()
-    return render(request, 'home.html', {'form':form})
+            teller_counter = form.save(commit=False)
+            teller_counter.received_by = request.user
+            teller_counter.save()
+            # messages.add_message(request, messages.INFO, f'Donation completed successfuly')
+            return redirect('tellercounter:receipt_cash', teller_counter_id_cash=teller_counter.id)
+    else:
+        form = CashContributorForm()
 
-def receiptpage(request):
-    data = TellerCounter.objects.latest('date_created')
-    return render(request, 'receipt.html',{'data':data})
+    context = {
+        'form': form,
+        'provinces':provinces,
+    }
+    return render(request, 'tellercounter/home.html', context)
 
-def showdata(request):
-    data = TellerCounter.objects.all()
-    return render(request, 'showdata.html', {'data':data})
+@login_required
+def add_cheque(request):
+    provinces = Province.objects.all()
+    if request.method == 'POST':
+        form = ChequeContributorForm(request.POST)
+        if form.is_valid():
+            teller_counter = form.save(commit=False)
+            teller_counter.received_by = request.user
+            teller_counter.save()
+            # messages.add_message(request, messages.INFO, f'Donation completed successfuly')
+            return redirect('tellercounter:receipt_cheque', teller_counter_id_cheque=teller_counter.id)
+
+    else:
+        form = ChequeContributorForm()
+
+    context = {
+        'form': form,
+        'provinces':provinces,
+    }
+    return render(request, 'tellercounter/home.html', context)
+
+@login_required
+def add_draft(request):
+    provinces = Province.objects.all()
+    if request.method == 'POST':
+        form = DraftContributorForm(request.POST)
+        if form.is_valid():
+            teller_counter = form.save(commit=False)
+            teller_counter.received_by = request.user
+            teller_counter.save()
+            # messages.add_message(request, messages.INFO, f'Donation completed successfuly')
+            return redirect('tellercounter:receipt_draft', teller_counter_id_draft=teller_counter.id)
+
+    else:
+        form = DraftContributorForm()
+
+    context = {
+        'form': form,
+        'provinces':provinces,
+    }
+    return render(request, 'tellercounter/home.html', context)
+
+@login_required
+def add_kind(request):
+    provinces = Province.objects.all()
+    if request.method == 'POST':
+        form = KindContributorForm(request.POST)
+        if form.is_valid():
+            teller_counter = form.save(commit=False)
+            teller_counter.received_by = request.user
+            teller_counter.save()
+            # messages.add_message(request, messages.INFO, f'Donation completed successfuly')
+            return redirect('tellercounter:receipt_kind', teller_counter_id_kind=teller_counter.id)
+
+    else:
+        form = KindContributorForm()
+
+    context = {
+        'form': form,
+        'provinces':provinces,
+    }
+    return render(request, 'tellercounter/home.html', context)
+
+def receipt_cash(request,teller_counter_id_cash):
+    data = get_object_or_404(CashContributor, id=teller_counter_id_cash)
+    return render(request, 'tellercounter/receipt.html',{'data':data})
+def receipt_cheque(request,teller_counter_id_cheque):
+    data = get_object_or_404(ChequeContributor, id=teller_counter_id_cheque)
+    return render(request, 'tellercounter/receipt.html',{'data':data})
+def receipt_draft(request,teller_counter_id_draft):
+    data = get_object_or_404(DraftContributor, id=teller_counter_id_draft)
+    return render(request, 'tellercounter/receipt.html',{'data':data})
+def receipt_kind(request,teller_counter_id_kind):
+    data = get_object_or_404(KindContributor, id=teller_counter_id_kind)
+    return render(request, 'tellercounter/receipt.html',{'data':data})

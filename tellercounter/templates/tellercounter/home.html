@@ -1,0 +1,282 @@
+{% extends 'tellercounter/base.html' %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+
+<!-- <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script type="text/javascript">
+	$(function () {
+    	$("#id_mode_donation").change(function () {
+            if ($(this).val() == "Cash") {
+            	$(".cashWrapper").show();
+        	} else {
+            	$(".cashWrapper").hide();
+        	}
+    	});
+	});
+
+  $(function () {
+    	$("#id_mode_donation").change(function () {
+            if ($(this).val() == "Cheque") {
+            	$(".chequeWrapper").show();
+        	} else {
+            	$(".chequeWrapper").hide();
+        	}
+    	});
+	});
+
+  $(function () {
+    	$("#id_mode_donation").change(function () {
+            if ($(this).val() == "Draft") {
+            	$(".draftWrapper").show();
+        	} else {
+            	$(".draftWrapper").hide();
+        	}
+    	});
+	});
+
+  $(function () {
+    	$("#id_mode_donation").change(function () {
+            if ($(this).val() == "Kind") {
+            	$(".kindWrapper").show();
+            }else{
+              $(".kindWrapper").hide()
+            }         
+    	});
+	});
+
+  $(function () {
+    	$("#id_kind_type").change(function () {
+            if ($(this).val() == "Other") {
+              $(".kindWrapper").hide();
+            }
+    	});
+	});
+</script> -->
+
+<!--form field to add donation-->
+<div>
+  {% for message in messages %}
+  <div class="alert {{ message.tags }} alert-dismissible shadow fade show" role="alert">
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+      </button>
+      {{ message | safe }}
+  </div>
+{% endfor %}
+</div>
+<div x-data="{ open: false }">
+  <button class="btn btn-warning btn-sm mt-3 ms-2" x-on:click="open = !open">Make Donation</button>
+<div x-show="open">
+
+<div class="myform mb-5 shadow p-4">
+  <h3 class="text-center">Donation Fields</h3>
+  <hr>
+<form method="POST">
+  {% csrf_token %}
+  <div class="container">
+      {{ form.non_field_errors }}
+      <div class="row">
+
+          <div class="col-lg-4 col-md-6 mb-2">
+              {{ form.name.errors }}
+              <label for="{{ form.name.id_for_label }}">Name</label>
+              <input type="text" class="form-control" name="name" id="id_name" style="text-transform: capitalize;" placeholder="Enter name here"/>
+          </div>
+          <div class="col-lg-4 col-md-6 mb-2">
+              {{ form.mobile.errors }}
+              <label for="{{ form.mobile.id_for_label }}">Mobile Number</label>
+              {{ form.mobile }}
+          </div>
+          <div class="col-lg-4 col-md-6 mb-2">
+              {{ form.state.errors }}
+              <label for="{{ form.state.id_for_label }}">State</label>
+              <select name="state" id="id_state" class="form-control"
+                  hx-get="{% url 'tellercounter:district' %}"
+                  hx-trigger="change"
+                  hx-target="#id_district"
+                  >
+                  <option selected>Select State</option>
+              {% for p in provinces %}            
+                      <option value="{{ p.pk }}">{{ p.name }}</option>            
+              {% endfor %}
+          </select>
+              <!-- {{ form.province }} -->
+          </div>
+          <div class="col-lg-4 col-md-6 mb-2">
+              {{ form.district.errors }}
+              <label for="{{ form.district.id_for_label }}">District</label>
+              <div id="id_district">
+                  {% include 'partials/district.html' %}
+              </div>                           
+          </div>
+
+          <div class="col-lg-4 col-md-6 mb-2">
+            {{ form.village.errors }}
+            <label for="{{ form.village.id_for_label }}">Vill/Town/City</label>
+            <input type="text" class="form-control" name="village" id="id_village" style="text-transform: capitalize;" placeholder="Enter vill/h.N./Town etc here"/>
+        </div>
+        <div class="col-lg-4 col-md-6 mb-2">
+          {{ form.pin.errors }}
+          <label for="{{ form.pin.id_for_label }}">Pin</label>
+          {{ form.pin }}
+      </div>
+      <div class="col-lg-4 col-md-6 mb-2">
+        {{ form.pan_no.errors }}
+        <label for="{{ form.pan_no.id_for_label }}">Pan Number</label>
+        {{ form.pan_no }}
+    </div>
+    </div>
+      <div class="col-lg-4 col-md-6 mb-2 mod_donationWrapper">
+        {{ form.mode_donation.errors }}
+        <label for="{{ form.mode_donation.id_for_label }}">Mode of Donation</label>
+        <select name="mode_donation" id="id_mode_donation" class="form-control"
+        hx-get="{% url 'tellercounter:mode_donation' %}"
+        hx-trigger="change"
+        hx-target="#modDonation"
+        >
+        <option selected>Select Mode Of Donation</option>          
+        <option value="Cash">Cash</option>
+        <option value="Cheque">Cheque</option>
+        <option value="Draft">Draft</option>
+        <option value="Kind">Kind</option>
+        </select>
+        </div>
+        <div id="modDonation"></div>
+
+<div class="col-4 container">
+  <a href="{% url 'tellercounter:home' %}">
+      <input class="form-control me-2 mt-2 btn btn-secondary" type="button" value="Refresh Content">
+  </a>    
+</div>
+</form>
+</div>
+</div>
+</div><!--end of x-data:show-->
+<div class="container">
+  <div id="cheque-donation" x-data="{open: false}">
+    <button class="btn btn-warning btn-sm mt-3 ms-2" x-on:click="open = !open">Cheque Donations</button>
+    <div x-show="open">
+    <h3>Cheque Donations by {{ request.user.first_name }}</h3>
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">Receipt No.</th>
+          <th scope="col">Date of Donation</th>
+          <th scope="col">Name</th>
+          <th scope="col">Mobile</th>
+          <th scope="col">Amount</th>
+          <th scope="col">Cheque No.</th>
+          <th scope="col">Cheque Micr</th>
+          <th scope="col">Cheque Date</th>
+        </tr>
+      </thead>
+      <tbody>
+      {% for d in donations_cheque_user %}
+        <tr>
+          <th scope="row">CHQ-{{ d.id }}</th>
+          <td>{{ d.date_created }}</td>
+          <td>{{ d.name }}</td>
+          <td>{{ d.mobile }}</td>
+          <td>{{ d.amt_cheque }}</td>
+          <td>{{ d.cheque_no }}</td>
+          <td>{{ d.micr_cheque }}</td>
+          <td>{{ d.date_cheque }}</td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+    </div>    
+  </div>
+  <div id="draft-donation" x-data="{open: false}">
+    <button class="btn btn-warning btn-sm mt-3 ms-2" x-on:click="open = !open">Draft Donations</button>
+    <div x-show="open">
+    <h3>Draft Donations by {{ request.user.first_name }}</h3>
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">Receipt No.</th>
+          <th scope="col">Date of Donation</th>
+          <th scope="col">Name</th>
+          <th scope="col">Mobile</th>
+          <th scope="col">Amount</th>
+          <th scope="col">Draft No.</th>
+          <th scope="col">Draft Micr</th>
+          <th scope="col">Draft Date</th>
+        </tr>
+      </thead>
+      <tbody>
+      {% for d in donations_draft_user %}
+        <tr>
+          <th scope="row">DFT-{{ d.id }}</th>
+          <td>{{ d.date_created }}</td>
+          <td>{{ d.name }}</td>
+          <td>{{ d.mobile }}</td>
+          <td>{{ d.amt_draft }}</td>
+          <td>{{ d.draft_no }}</td>
+          <td>{{ d.micr_draft }}</td>
+          <td>{{ d.date_draft }}</td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>    
+  </div>
+  </div>
+
+  <div id="kind-donation" x-data="{open: false}">
+    <button class="btn btn-warning btn-sm mt-3 ms-2" x-on:click="open = !open">Kind Donations</button>
+    <div x-show="open">
+    <h3>Kind Donations by {{ request.user.first_name }}</h3>
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">Receipt No.</th>
+          <th scope="col">Date of Donation</th>
+          <th scope="col">Name</th>
+          <th scope="col">Mobile</th>
+          <th scope="col">Kind Type</th>
+          <th scope="col">Kind Weight</th>
+        </tr>
+      </thead>
+      <tbody>
+      {% for d in donations_kind_user %}
+        <tr>
+          <th scope="row">KND-{{ d.id }}</th>
+          <td>{{ d.date_created }}</td>
+          <td>{{ d.name }}</td>
+          <td>{{ d.mobile }}</td>
+          <td>{{ d.kind_type }}</td>
+          <td>{{ d.kind_wgt }} {{ d.kind_unit }}</td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>    
+  </div>
+  <div id="cash-donation">
+    <h3>Cash Donations by {{ request.user.first_name }}</h3>
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">Receipt No.</th>
+          <th scope="col">Date of Donation</th>
+          <th scope="col">Name</th>
+          <th scope="col">Mobile</th>
+          <th scope="col">Amount</th>
+        </tr>
+      </thead>
+      <tbody>
+      {% for d in donations_cash_user %}
+        <tr>
+          <th scope="row">CS-{{ d.id }}</th>
+          <td>{{ d.date_created }}</td>
+          <td>{{ d.name }}</td>
+          <td>{{ d.mobile }}</td>
+          <td>{{ d.amt_cash }}</td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>  
+  </div>
+</div>
+{% endblock %}

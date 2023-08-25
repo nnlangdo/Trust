@@ -1,0 +1,183 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+    <title>Receipt Ramrasoi</title>
+    <link rel="stylesheet" type="text/css" media="print" href="{% static 'css/print.css' %}">
+    <style>
+        .data-receipt{
+            font-weight: bold;
+            color: navy;
+        }
+    </style>
+</head>
+<body>
+    <div class="printable">
+        <header>
+            <div class="row" style="color: red; background-color: yellow;">
+              <div class="text-center pt-2">
+                <h4 class="mb-0" style="font-weight: bold;">सीता रसोई न्यास, अयोध्या (Sita Rasoi Nyas, Ayodhya)</h4>
+                <p class="mb-0" style="font-size: 15px; font-weight: bold; color: navy;">
+                    श्रीराम जन्मभूमि मंदिर दर्शन के लिए सम्पूर्ण भारत से अयोध्या आने वाले भक्तों को भोजन प्रसाद देने हेतु निर्मित ट्रस्ट<br>
+                    Trust to provide Bhojan Prasad for Devotees of Shriram Janmbhoomi Mandir
+                </p>
+                <p class="mb-0" style="font-size: 15px; font-weight: bold; color: red;">Contact - 9448284629</p>
+              </div>
+            </div>
+          </header>
+      
+        <div style="width: 1000px; margin: 30px auto;background-image:url('{{ STATIC_URL }}images/ram1.jpg');
+        background-repeat:no-repeat;
+        background-size:100%;">
+        <p class="mb-3 text-center" style="font-size: 20px; font-weight: bold;">सीता रसोई न्यास, अयोध्या को दिए गये दान की रसीद (Donation Receipt For Sita Rasoi)</p>
+        <b>रसीद क्रमांक (Receipt No)-</b><span class="data-receipt">
+            <b>
+                {% if data.mode_donation == "Cash" %}
+                CS-
+                {% elif data.mode_donation == "Cheque" %}
+                CHQ-
+                {% elif data.mode_donation == "Draft" %}
+                DFT-
+                {% else %}
+                KND-
+                {% endif %}
+                {{ data.id }}
+            </b>
+        </span> 
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Name: <span class="data-receipt">{{ data.name }}</span></th>
+                    <th scope="col">Date of Donation: <span class="data-receipt">{{ data.date_created }}</th>
+                  </tr>
+                  <tr>
+                    <th scope="col">
+                        Address: <span class="data-receipt">
+                            {{ data.village }} {{ data.district }} {{ data.state }} 
+                            {% if data.pin %}
+                            Pin-{{ data.pin }}
+                            {% endif %}
+                        </span>
+                    </th>
+                  </tr>
+                  <tr>
+                    <th scope="col">Mobile: <span class="data-receipt">{{ data.mobile }}</th>
+                    <th scope="col">
+                    {% if data.pan_no %}
+                        Pan: <span class="data-receipt">{{ data.pan_no }}</span>
+                    {% endif %}
+                    </th>
+                  </tr>
+                  <tr>
+                    <th scope="col">Mod of Donation: <span class="data-receipt">{{ data.mode_donation }}</th>
+                    <th scope="col">
+                        {% if data.mode_donation == "Cash" %}
+                        Amount: <span class="data-receipt">
+                            (Rs) {{ data.amt_cash }}
+                            </span>
+                        {% elif data.mode_donation == "Cheque" %}
+                        Amount: <span class="data-receipt">
+                            (Rs) {{ data.amt_cheque }}
+                            </span>
+                        {% elif data.mode_donation == "Draft" %}
+                        Amount: <span class="data-receipt">
+                            (Rs) {{ data.amt_draft }}
+                            </span>
+                        {% else %}
+                        Type -
+                        <span class="data-receipt">
+                         {{ data.kind_type }}
+                        </span>
+                        {% endif %}
+                    </th>
+                  </tr>
+                  <tr>
+                    <th scope="col">
+                        {% if data.mode_donation == "Cheque" %}
+                        Cheque No.: <span class="data-receipt">
+                            {{ data.cheque_no }}
+                            </span>
+                        {% elif data.mode_donation == "Draft" %}
+                        Draft No.: <span class="data-receipt">
+                            {{ data.draft_no }}
+                            </span>
+                        {% elif data.mode_donation == "Kind" %}
+                            Kind Weight -
+                        <span class="data-receipt">
+                         {{ data.kind_wgt }} {{ data.kind_unit }}
+                        </span>
+                        {% endif %}
+                    </th>
+                    <th scope="col">
+                        {% if data.mode_donation == "Cheque" %}
+                        Cheque Micr.: <span class="data-receipt">
+                            {{ data.micr_cheque }}
+                            </span>
+                        {% elif data.mode_donation == "Draft" %}
+                        Draft Micr.: <span class="data-receipt">
+                            {{ data.micr_draft }}
+                            </span>
+                        {% endif %}
+                    </th>
+                  </tr>
+                  {% if data.chequ_no or data.draft_no %}
+                  <tr>
+                    <th scope="col">
+                        {% if data.mode_donation == "Cheque" %}
+                        Cheque Date: <span class="data-receipt">
+                            {{ data.date_cheque }}
+                            </span>
+                        {% elif data.mode_donation == "Draft" %}
+                        Draft Date: <span class="data-receipt">
+                            {{ data.date_draft }}
+                            </span>
+                        {% endif %}
+                    </th>
+                    <th scope="col">
+                        {% if data.mode_donation == "Cheque" %}
+                        Cheque Bank: <span class="data-receipt">
+                            {{ data.micr_cheque }}
+                            </span>
+                        {% elif data.mode_donation == "Draft" %}
+                        Draft Bank: <span class="data-receipt">
+                            {{ data.micr_draft }}
+                            </span>
+                        {% endif %}
+                    </th>
+                  </tr>
+                {% endif %}
+            </thead>
+          </table>
+        <div class="p-2" style="font-size: 11px;">
+            खाता सं (A/C)- 02942010037740<br>
+            पैन (Pan)- AADTS01399B<br>
+            पंजाब नेशनल बैंक,नया घाट शाखा (Punjab National Bank, Naya Ghat Branch)
+            आई.एफ.एस.सी कोड (IFSC Code) – PUNB01386500<br>
+            अयोध्या धाम,उ.प्र.(Ayodhya Dham, UP)-224123
+          </div>
+    
+        <div class="p-2" style="font-size: 11px;">
+            Note – सीता रसोई न्यास को दिया गया दान आयकर विभाग की धारा 80G के अन्तर्गत नियमानुशार आयकर छूट के लिए मान्य है<br>
+            Donation for Sita Rasoi Nyas is exempted from Income Tax under 80G Act 
+        </div>
+        <div>
+            <span>With Thanks!</span>
+            <p style="margin-top: 50px;">
+                <b>Received By</b>
+            </p>
+        </div>
+    </div><!--end container-->    
+    </div>
+<div style="width: 1000px;margin: 20px auto;">
+    : to print the letter press Ctrl+P or go to print option in browser
+<div class="row mt-3">
+    <div class="col">
+        <a href="{% url 'tellercounter:home' %}" class="btn btn-primary">Back to View Page</a>
+    </div>
+</div>
+</div>
+</body>
+</html>

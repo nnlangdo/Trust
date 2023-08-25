@@ -21,7 +21,5 @@ from tellercounter import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('django.contrib.auth.urls')),
-    path('', views.home, name='home'),
-    path('receipt/', views.receiptpage, name='receipt'),
-    path('showdata/', views.showdata, name='showdata'),
+    path('tellercounter/',include('tellercounter.urls',namespace="tellercounter")),
 ]

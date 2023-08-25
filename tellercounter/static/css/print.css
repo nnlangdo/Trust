@@ -1,0 +1,15 @@
+/* Define styles for printing */
+@media print {
+    /* Hide unnecessary elements */
+    body > *:not(.printable) {
+      display: none;
+    }
+    
+    /* Customize the appearance for printing */
+    body {
+      font-size: 12pt;
+      background-color: white;
+      color: black;
+    }
+  }
+  

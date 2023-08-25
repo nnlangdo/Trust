@@ -1,0 +1,91 @@
+{% if mode_donation == "Cash" %}
+<div class="col-lg-4 col-md-6 mb-2 cashWrapper">
+    {{ form.amt_cash.errors }}
+    <label for="{{ form.amt_cash.id_for_label }}">Amount</label>
+    <input class="form-control" type="number" name="amt_cash" id="id_amt_cash" min="1" max="199999" required>
+  </div>
+  <div class="col-4 container">
+    <input onclick="javascript: form.action='/tellercounter/add_cash/';" class="form-control me-2 btn btn-primary" type="submit" value="Submit">
+    </div>
+{% elif mode_donation == "Cheque" %}
+<div class="row">
+    <div class="col-lg-4 col-md-6 mb-2 chequeWrapper">
+        {{ form.cheque_no.errors }}
+        <label for="{{ form.cheque_no.id_for_label }}">Cheque No</label>
+        <input class="form-control" type="text" name="cheque_no" id="id_cheque_no" pattern="[0-9]{6}" required>
+      </div>
+      <div class="col-lg-4 col-md-6 mb-2 chequeWrapper">
+        {{ form.date_cheque.errors }}
+        <label for="{{ form.date_cheque.id_for_label }}">Cheque Date</label>
+        <input class="form-control" type="date" name="date_cheque" id="id_date_cheque" required>
+      </div>
+      <div class="col-lg-4 col-md-6 mb-2 chequeWrapper">
+        {{ form.micr_cheque.errors }}
+        <label for="{{ form.micr_cheque.id_for_label }}">Cheque Micr</label>
+        <input class="form-control" type="number" name="micr_cheque" id="id_micr_cheque" pattern="[0-9]{9}" required>
+      </div>
+      <div class="col-lg-4 col-md-6 mb-2 chequeWrapper">
+        {{ form.amt_cheque.errors }}
+        <label for="{{ form.amt_cheque.id_for_label }}">Cheque Amount</label>
+        <input class="form-control" type="number" name="amt_cheque" id="id_amt_cheque" min="1" max="199999" required>
+      </div>
+</div>
+    <div class="col-4 container">
+        <input onclick="javascript: form.action='/tellercounter/add_cheque/';" class="form-control me-2 btn btn-primary" type="submit" value="Submit">
+    </div>    
+
+    {% elif mode_donation == "Draft" %}
+<div class="row">
+    <div class="col-lg-4 col-md-6 mb-2 draftWrapper">
+        {{ form.draft_no.errors }}
+        <label for="{{ form.draft_no.id_for_label }}">Draft Number</label>
+        <input class="form-control" type="number" name="draft_no" id="id_draft_no" pattern="[0-9]{6}" required>
+      </div>
+      <div class="col-lg-4 col-md-6 mb-2 draftWrapper">
+        {{ form.micr_draft.errors }}
+        <label for="{{ form.micr_draft.id_for_label }}">Draft Micr</label>
+        <input class="form-control" type="number" name="micr_draft" id="id_micr_draft" pattern="[0-9]{9}" required>
+      </div>
+      <div class="col-lg-4 col-md-6 mb-2 draftWrapper">
+        {{ form.date_draft.errors }}
+        <label for="{{ form.date_draft.id_for_label }}">Draft Micr</label>
+        <input class="form-control" type="date" name="date_draft" id="id_date_draft" required>
+      </div>
+      <div class="col-lg-4 col-md-6 mb-2 draftWrapper">
+        {{ form.amt_draft.errors }}
+        <label for="{{ form.amt_draft.id_for_label }}">Draft Amount</label>
+        <input class="form-control" type="number" name="amt_draft" id="id_amt_draft" min="1" required>
+      </div>    
+    </div>
+    <div class="col-4 container">
+    <input onclick="javascript: form.action='/tellercounter/add_draft/';" class="form-control me-2 btn btn-primary" type="submit" value="Submit">
+    </div>
+    {% else %}
+    <div class="row">
+        <div class="col-lg-4 col-md-6 mb-2 kindWrapper">
+            {{ form.kind_type.errors }}
+            <label for="{{ form.kind_type.id_for_label }}">Kind Type</label>
+            <select name="kind_type" id="id_kind_type" class="form-control">
+                <option value="Silver Like Material">Silver Like Material</option>
+                <option value="Gold Like Material">Gold Like Material</option>
+                <option value="Other">Other</option>
+            </select>
+          </div>
+          <div class="col-lg-4 col-md-6 mb-2 kindWrapper">
+            {{ form.kind_wgt.errors }}
+            <label for="{{ form.kind_wgt.id_for_label }}">Weight</label>
+            <input class="form-control" type="number" name="kind_wgt" id="id_kind_wgt" required>
+          </div>
+          <div class="col-lg-4 col-md-6 mb-2 kindWrapper">
+            {{ form.kind_unit.errors }}
+            <label for="{{ form.kind_unit.id_for_label }}">Unit</label>
+            <select name="kind_unit" id="id_kind_unit" class="form-control">
+                <option value="gram">gram</option>
+                <option value="kilogram">kilogram</option>
+            </select>
+          </div>        
+    </div>
+<div class="col-4 container">
+    <input onclick="javascript: form.action='/tellercounter/add_kind/';" class="form-control me-2 btn btn-primary" type="submit" value="Submit">
+</div>
+{% endif %}

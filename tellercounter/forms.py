@@ -1,80 +1,89 @@
 from random import choice
 from django import forms
-from .models import TellerCounter
+from .models import CashContributor,ChequeContributor,DraftContributor,KindContributor
 
-KIND_UNIT_CHOICE = (
-    ('gram','gram'),
-    ('kilogram','kilogram'),
-)
 
-MODE_DONATION_CHOICE = (
-    ('','Mode of donation'),
-    ('Cash','Cash'),
-    ('Cheque','Cheque'),
-    ('Draft','Draft'),
-    ('Kind','Kind'),
-)
+class CashContributorForm(forms.ModelForm):
+    class Meta:
+        model = CashContributor
+        fields = ['id','name','mobile','state','district','village','pin','pan_no',
+                    'mode_donation','amt_cash']
+        widgets = {
+            'name': forms.TextInput(attrs={'class':'form-control'}),
+            'mobile': forms.TextInput(attrs={'class':'form-control'}),
+            'state': forms.Select(attrs={'class':'form-control'}), 
+            'district': forms.Select(attrs={'class':'form-control'}),
+            'village': forms.TextInput(attrs={'class':'form-control'}),
+            'pin': forms.TextInput(attrs={'class':'form-control'}),
+            'pan_no': forms.TextInput(attrs={'class':'form-control'}),
+            'mode_donation': forms.Select(attrs={'class':'form-control'}),
+            'amt_cash': forms.NumberInput(attrs={'class':'form-control','max':199999,'required':'true'}),
+        }
 
-KIND_TYPE_CHOICE = (
-    ('Silver Like Material','Silver Like Material'),
-    ('Gold Like Material','Gold Like Material'),
-    ('Other','Other Valueble')
-)
+class ChequeContributorForm(forms.ModelForm):
+    class Meta:
+        model = ChequeContributor
+        fields = ['id','name','mobile','state','district','village','pin','pan_no',
+                    'mode_donation','cheque_no',
+                    'micr_cheque','date_cheque','amt_cheque']
+        widgets = {
+            'name': forms.TextInput(attrs={'class':'form-control'}),
+            'mobile': forms.TextInput(attrs={'class':'form-control'}),
+            'state': forms.Select(attrs={'class':'form-control'}), 
+            'district': forms.Select(attrs={'class':'form-control'}),
+            'village': forms.TextInput(attrs={'class':'form-control'}),
+            'pin': forms.TextInput(attrs={'class':'form-control'}),
+            'pan_no': forms.TextInput(attrs={'class':'form-control'}),
+            'mode_donation': forms.Select(attrs={'class':'form-control'}),
+            'cheque_no': forms.TextInput(attrs={'class':'form-control'}),
+            'micr_cheque': forms.TextInput(attrs={'class':'form-control'}),
+            'date_cheque': forms.TextInput(attrs={'class':'form-control','type':'date'}),
+            'amt_cheque': forms.NumberInput(attrs={'class':'form-control','type':'number'}),
+            # 'status': forms.Select(attrs={'class':'form-control'}),
+            # 'comment': forms.Textarea(attrs={'class':'form-control'}),
+        }
 
-STATE_CHOICE = (
-    ('Andhra Pradesh','Andhra Pradesh'),
-    ('Arunachal Pradesh	','Arunachal Pradesh'),
-    ('Assam','Assam'),
-    ('Bihar','Bihar'),
-    ('Chhattisgarh','Chhattisgarh'),
-    ('Goa','Goa'),
-    ('Gujarat','Gujarat'),
-    ('Haryana','Haryana'),
-    ('Himachal Pradesh','Himachal Pradesh'),
-    ('Jharkhand','Jharkhand'),
-    ('Karnataka','Karnataka'),
-    ('Kerala','Kerala'),
-    ('Madhya Pradesh','Madhya Pradesh'),
-    ('Maharashtra','Maharashtra'),
-    ('Manipur','Manipur'),
-    ('Meghalaya','Meghalaya'),
-    ('Mizoram','Mizoram'),
-    ('Nagaland','Nagaland'),
-    ('Odisha','Odisha'),
-    ('Punjab','Punjab'),
-    ('Rajasthan','Rajasthan'),
-    ('Sikkim','Sikkim'),
-    ('Tamil Nadu','Tamil Nadu'),
-    ('Telangana','Telangana'),
-    ('Tripura','Tripura'),
-    ('Uttar Pradesh','Uttar Pradesh'),
-    ('Uttarakhand','Uttarakhand'),
-    ('West Bengal','West Bengal'),
-    ('Andaman and Nicobar Islands','Andaman and Nicobar Islands'),
-    ('Chandigarh','Chandigarh'),
-    ('Dadra & Nagar Haveli and Daman & Diu','Dadra & Nagar Haveli and Daman & Diu'),
-    ('Delhi','Delhi'),
-    ('Jammu and Kashmir','Jammu and Kashmir'),
-    ('Lakshadweep','Lakshadweep'),
-    ('Puducherry','Puducherry'),
-    ('Ladakh','Ladakh'),
-)
+class DraftContributorForm(forms.ModelForm):
+    class Meta:
+        model = DraftContributor
+        fields = ['id','name','mobile','state','district','village','pin','pan_no',
+                    'mode_donation','draft_no','micr_draft','date_draft','amt_draft']
+        widgets = {
+            'name': forms.TextInput(attrs={'class':'form-control'}),
+            'mobile': forms.TextInput(attrs={'class':'form-control'}),
+            'state': forms.Select(attrs={'class':'form-control'}), 
+            'district': forms.Select(attrs={'class':'form-control'}),
+            'village': forms.TextInput(attrs={'class':'form-control'}),
+            'pin': forms.TextInput(attrs={'class':'form-control'}),
+            'pan_no': forms.TextInput(attrs={'class':'form-control'}),
+            'mode_donation': forms.Select(attrs={'class':'form-control'}),
+            'draft_no': forms.TextInput(attrs={'class':'form-control'}),
+            'micr_draft': forms.TextInput(attrs={'class':'form-control'}),
+            'date_draft': forms.TextInput(attrs={'class':'form-control','type':'date'}),
+            'amt_draft': forms.NumberInput(attrs={'class':'form-control','type':'number'}),
+            # 'status': forms.Select(attrs={'class':'form-control'}),
+            # 'comment': forms.Textarea(attrs={'class':'form-control'}),
+        }
 
-class TellerCounterForm(forms.Form):
-    name = forms.CharField()
-    address = forms.CharField()
-    district = forms.CharField()
-    state = forms.ChoiceField(choices=STATE_CHOICE)
-    pin = forms.CharField(required=False)
-    mobile = forms.CharField(required=False)
-    mode_donation = forms.ChoiceField(required=False,choices=MODE_DONATION_CHOICE)
-    amt_cash = forms.CharField(required=False)
-    cheque_no = forms.CharField(required=False)
-    micr_cheque = forms.CharField(required=False)
-    draft_no = forms.CharField(required=False)
-    micr_draft = forms.CharField(required=False)
-    kind_type = forms.ChoiceField(required=False,choices=KIND_TYPE_CHOICE)
-    kind_wgt = forms.CharField(required=False)
-    kind_unit = forms.ChoiceField(required=False,choices=KIND_UNIT_CHOICE)
-    comment = forms.CharField(required=False,widget=forms.Textarea(attrs={'rows':3,'cols':3}))
-
+class KindContributorForm(forms.ModelForm):
+    class Meta:
+        model = KindContributor
+        fields = ['id','name','mobile','state','district','village','pin','pan_no',
+                    'mode_donation',
+                    'kind_type',
+                    'kind_wgt','kind_unit']
+        widgets = {
+            'name': forms.TextInput(attrs={'class':'form-control'}),
+            'mobile': forms.TextInput(attrs={'class':'form-control'}),
+            'state': forms.Select(attrs={'class':'form-control'}), 
+            'district': forms.Select(attrs={'class':'form-control'}),
+            'village': forms.TextInput(attrs={'class':'form-control'}),
+            'pin': forms.TextInput(attrs={'class':'form-control'}),
+            'pan_no': forms.TextInput(attrs={'class':'form-control'}),
+            'mode_donation': forms.Select(attrs={'class':'form-control'}),
+            'kind_type': forms.Select(attrs={'class':'form-control'}),
+            'kind_wgt': forms.TextInput(attrs={'class':'form-control'}),
+            'kind_unit': forms.Select(attrs={'class':'form-control'}),
+            # 'status': forms.Select(attrs={'class':'form-control'}),
+            # 'comment': forms.Textarea(attrs={'class':'form-control'}),
+        }
