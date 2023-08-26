@@ -25,43 +25,63 @@ STATUS_CHOICES = (
     ('live','live'),
     ('cancelled','cancelled'),
 )
-STATE_CHOICE = (
-    ('Andhra Pradesh','Andhra Pradesh'),
-    ('Arunachal Pradesh	','Arunachal Pradesh'),
-    ('Assam','Assam'),
-    ('Bihar','Bihar'),
-    ('Chhattisgarh','Chhattisgarh'),
-    ('Goa','Goa'),
-    ('Gujarat','Gujarat'),
-    ('Haryana','Haryana'),
-    ('Himachal Pradesh','Himachal Pradesh'),
-    ('Jharkhand','Jharkhand'),
-    ('Karnataka','Karnataka'),
-    ('Kerala','Kerala'),
-    ('Madhya Pradesh','Madhya Pradesh'),
-    ('Maharashtra','Maharashtra'),
-    ('Manipur','Manipur'),
-    ('Meghalaya','Meghalaya'),
-    ('Mizoram','Mizoram'),
-    ('Nagaland','Nagaland'),
-    ('Odisha','Odisha'),
-    ('Punjab','Punjab'),
-    ('Rajasthan','Rajasthan'),
-    ('Sikkim','Sikkim'),
-    ('Tamil Nadu','Tamil Nadu'),
-    ('Telangana','Telangana'),
-    ('Tripura','Tripura'),
-    ('Uttar Pradesh','Uttar Pradesh'),
-    ('Uttarakhand','Uttarakhand'),
-    ('West Bengal','West Bengal'),
-    ('Andaman and Nicobar Islands','Andaman and Nicobar Islands'),
-    ('Chandigarh','Chandigarh'),
-    ('Dadra & Nagar Haveli and Daman & Diu','Dadra & Nagar Haveli and Daman & Diu'),
-    ('Delhi','Delhi'),
-    ('Jammu and Kashmir','Jammu and Kashmir'),
-    ('Lakshadweep','Lakshadweep'),
-    ('Puducherry','Puducherry'),
-    ('Ladakh','Ladakh'),
+BANK_CHOICES = (
+    ('Abhyudaya Co-op Bank','Abhyudaya Co-op Bank'),
+    ('Allahabad Bank','Allahabad Bank'),
+    ('Andhra Bank','Andhra Bank'),
+    ('Apna Sahakari Bank','Apna Sahakari Bank'),
+    ('Axis Bank','Axis Bank'),
+    ('Bandhan Bank','Bandhan Bank'),
+    ('Bank Of Baroda','Bank Of Baroda'),
+    ('Bank of India','Bank of India'),
+    ('Bank of Maharashtra','Bank of Maharashtra'),
+    ('Bhartiya Mahila Bank','Bhartiya Mahila Bank'),
+    ('Canara Bank','Canara Bank'),
+    ('Central Bank of India','Central Bank of India'),
+    ('Citi bank','Citi bank'),
+    ('Corporation Bank','Corporation Bank'),
+    ('DCB Bank','DCB Bank'),
+    ('Federal Bank','Federal Bank'),
+    ('Grameen Bank','Grameen Bank'),
+    ('Gujarat State Co-op Bank','Gujarat State Co-op Bank'),
+    ('Hasti Co-op Bank','Hasti Co-op Bank'),
+    ('HDFC Bank','HDFC Bank'),
+    ('ICICI Bank','ICICI Bank'),
+    ('IDBI Bank','IDBI Bank'),
+    ('IDFC Bank','IDFC Bank'),
+    ('Indian Bank','Indian Bank'),
+    ('Indian Overseas Bank','Indian Overseas Bank'),
+    ('IndusInd Bank','IndusInd Bank'),
+    ('ING Vysya Bank','ING Vysya Bank'),
+    ('Janata Sahakari Bank','Janata Sahakari Bank'),
+    ('Karnataka Bank','Karnataka Bank'),
+    ('Karur Vysya Bank','Karur Vysya Bank'),
+    ('Kotak Mahindra Bank','Kotak Mahindra Bank'),
+    ('Mehsana Urban Co-op Bank','Mehsana Urban Co-op Bank'),
+    ('Nainital Bank','Nainital Bank'),
+    ('NKGSB Co-op Bank','NKGSB Co-op Bank'),
+    ('Oriental Bank of Commerce','Oriental Bank of Commerce'),
+    ('Others','Others'),
+    ('Post Office','Post Office'),
+    ('Punjab & Maharashtra Co-op Bank','Punjab & Maharashtra Co-op Bank'),
+    ('Punjab National Bank','Punjab National Bank'),
+    ('Punjab & Sind Bank','Punjab & Sind Bank'),
+    ('RBL Bank','RBL Bank'),
+    ('Saraswat Bank','Saraswat Bank'),
+    ('State Bank of Bikaner & Jaipur','State Bank of Bikaner & Jaipur'),
+    ('State Bank of Hyderabad','State Bank of Hyderabad'),
+    ('State Bank Of India','State Bank Of India'),
+    ('State Bank of Mysore','State Bank of Mysore'),
+    ('State Bank of Patiala','State Bank of Patiala'),
+    ('State Bank of Travancore','State Bank of Travancore'),
+    ('Syndicate Bank','Syndicate Bank'),
+    ('Tamilnad Mercantile Bank','Tamilnad Mercantile Bank'),
+    ('The South Indian Bank','The South Indian Bank'),
+    ('UCO Bank','UCO Bank'),
+    ('Union Bank of India','Union Bank of India'),
+    ('United Bank of India','United Bank of India'),
+    ('Vijaya Bank','Vijaya Bank'),
+    ('Yes Bank','Yes Bank'),
 )
 
 class Province(models.Model):
@@ -115,6 +135,7 @@ class ChequeContributor(models.Model):
     date_cheque = models.DateField()
     micr_cheque = models.CharField(max_length=9)
     amt_cheque = models.PositiveSmallIntegerField()
+    bank_cheque = models.CharField(max_length=50,choices=BANK_CHOICES, blank=True, null=True)
     status = models.CharField(choices=STATUS_CHOICES,default='live',max_length=9)
     comment = models.TextField(blank=True,null=True)
     date_created = models.DateTimeField(auto_now_add=True)
@@ -137,6 +158,7 @@ class DraftContributor(models.Model):
     micr_draft = models.CharField(max_length=9)
     date_draft = models.DateField()
     amt_draft = models.PositiveSmallIntegerField()
+    bank_draft = models.CharField(max_length=50,choices=BANK_CHOICES, blank=True, null=True)
     status = models.CharField(choices=STATUS_CHOICES,default='live',max_length=9)
     comment = models.TextField(blank=True,null=True)
     date_created = models.DateTimeField(auto_now_add=True)

@@ -12,7 +12,12 @@
     <div class="col-lg-4 col-md-6 mb-2 chequeWrapper">
         {{ form.cheque_no.errors }}
         <label for="{{ form.cheque_no.id_for_label }}">Cheque No</label>
-        <input class="form-control" type="text" name="cheque_no" id="id_cheque_no" pattern="[0-9]{6}" required>
+        <input class="form-control" type="text" name="cheque_no" id="id_cheque_no" minlength="6" maxlength="6" pattern="[0-9]{6}" required>
+      </div>
+      <div class="col-lg-4 col-md-6 mb-2 chequeWrapper">
+        {{ form.micr_cheque.errors }}
+        <label for="{{ form.micr_cheque.id_for_label }}">Cheque Micr</label>
+        <input class="form-control" type="text" name="micr_cheque" id="id_micr_cheque" minlength="9" maxlength="9" pattern="[0-9]{9}" required>
       </div>
       <div class="col-lg-4 col-md-6 mb-2 chequeWrapper">
         {{ form.date_cheque.errors }}
@@ -20,14 +25,9 @@
         <input class="form-control" type="date" name="date_cheque" id="id_date_cheque" required>
       </div>
       <div class="col-lg-4 col-md-6 mb-2 chequeWrapper">
-        {{ form.micr_cheque.errors }}
-        <label for="{{ form.micr_cheque.id_for_label }}">Cheque Micr</label>
-        <input class="form-control" type="number" name="micr_cheque" id="id_micr_cheque" pattern="[0-9]{9}" required>
-      </div>
-      <div class="col-lg-4 col-md-6 mb-2 chequeWrapper">
         {{ form.amt_cheque.errors }}
         <label for="{{ form.amt_cheque.id_for_label }}">Cheque Amount</label>
-        <input class="form-control" type="number" name="amt_cheque" id="id_amt_cheque" min="1" max="199999" required>
+        <input class="form-control" type="number" name="amt_cheque" id="id_amt_cheque" required>
       </div>
 </div>
     <div class="col-4 container">
@@ -39,12 +39,12 @@
     <div class="col-lg-4 col-md-6 mb-2 draftWrapper">
         {{ form.draft_no.errors }}
         <label for="{{ form.draft_no.id_for_label }}">Draft Number</label>
-        <input class="form-control" type="number" name="draft_no" id="id_draft_no" pattern="[0-9]{6}" required>
+        <input class="form-control" type="text" name="draft_no" id="id_draft_no" minlength="6" maxlength="6" pattern="[0-9]{6}" required>
       </div>
       <div class="col-lg-4 col-md-6 mb-2 draftWrapper">
         {{ form.micr_draft.errors }}
         <label for="{{ form.micr_draft.id_for_label }}">Draft Micr</label>
-        <input class="form-control" type="number" name="micr_draft" id="id_micr_draft" pattern="[0-9]{9}" required>
+        <input class="form-control" type="text" name="micr_draft" id="id_micr_draft" minlength="9" maxlength="9" pattern="[0-9]{9}" required>
       </div>
       <div class="col-lg-4 col-md-6 mb-2 draftWrapper">
         {{ form.date_draft.errors }}

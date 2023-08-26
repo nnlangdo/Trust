@@ -87,7 +87,7 @@
           <div class="col-lg-4 col-md-6 mb-2">
               {{ form.mobile.errors }}
               <label for="{{ form.mobile.id_for_label }}">Mobile Number</label>
-              {{ form.mobile }}
+              <input type="text" class="form-control" name="mobile" id="id_mobile" minlength="10" maxlength="10" placeholder="Enter mobile number"/>
           </div>
           <div class="col-lg-4 col-md-6 mb-2">
               {{ form.state.errors }}
@@ -120,12 +120,12 @@
         <div class="col-lg-4 col-md-6 mb-2">
           {{ form.pin.errors }}
           <label for="{{ form.pin.id_for_label }}">Pin</label>
-          {{ form.pin }}
+          <input type="text" class="form-control" name="pin" id="id_pin" minlength="6" maxlength="6">
       </div>
       <div class="col-lg-4 col-md-6 mb-2">
         {{ form.pan_no.errors }}
         <label for="{{ form.pan_no.id_for_label }}">Pan Number</label>
-        {{ form.pan_no }}
+        <input class="form-control" type="text" name="pan_no" id="id_pan_no" minlength="10" maxlength="10">
     </div>
     </div>
       <div class="col-lg-4 col-md-6 mb-2 mod_donationWrapper">

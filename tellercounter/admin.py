@@ -42,7 +42,7 @@ class ChequeContributorAdmin(ImportExportModelAdmin):
     resource_class = ChequeContributorResource
     list_display = ['id','name','mobile','state','district','village','pin','pan_no',
                     'mode_donation','cheque_no',
-                    'micr_cheque','date_cheque','amt_cheque','status','comment','date_created']
+                    'micr_cheque','date_cheque','amt_cheque','bank_cheque','status','comment','date_created']
     search_fields = ('name',)
 
 admin.site.register(ChequeContributor, ChequeContributorAdmin)
@@ -55,7 +55,7 @@ class DraftContributorAdmin(ImportExportModelAdmin):
     resource_class = DraftContributorResource
     list_display = ['id','name','mobile','state','district','village','pin','pan_no',
                     'mode_donation','draft_no','micr_draft','date_draft',
-                    'amt_draft','status','comment','date_created']
+                    'amt_draft','bank_draft','status','comment','date_created']
     search_fields = ('name',)
 
 admin.site.register(DraftContributor, DraftContributorAdmin)

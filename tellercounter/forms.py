@@ -25,7 +25,7 @@ class ChequeContributorForm(forms.ModelForm):
         model = ChequeContributor
         fields = ['id','name','mobile','state','district','village','pin','pan_no',
                     'mode_donation','cheque_no',
-                    'micr_cheque','date_cheque','amt_cheque']
+                    'micr_cheque','date_cheque','amt_cheque','bank_cheque']
         widgets = {
             'name': forms.TextInput(attrs={'class':'form-control'}),
             'mobile': forms.TextInput(attrs={'class':'form-control'}),
@@ -39,6 +39,7 @@ class ChequeContributorForm(forms.ModelForm):
             'micr_cheque': forms.TextInput(attrs={'class':'form-control'}),
             'date_cheque': forms.TextInput(attrs={'class':'form-control','type':'date'}),
             'amt_cheque': forms.NumberInput(attrs={'class':'form-control','type':'number'}),
+            'bank_cheque': forms.Select(attrs={'class':'form-control'}),
             # 'status': forms.Select(attrs={'class':'form-control'}),
             # 'comment': forms.Textarea(attrs={'class':'form-control'}),
         }
@@ -47,7 +48,7 @@ class DraftContributorForm(forms.ModelForm):
     class Meta:
         model = DraftContributor
         fields = ['id','name','mobile','state','district','village','pin','pan_no',
-                    'mode_donation','draft_no','micr_draft','date_draft','amt_draft']
+                    'mode_donation','draft_no','micr_draft','date_draft','amt_draft','bank_draft']
         widgets = {
             'name': forms.TextInput(attrs={'class':'form-control'}),
             'mobile': forms.TextInput(attrs={'class':'form-control'}),
@@ -61,6 +62,7 @@ class DraftContributorForm(forms.ModelForm):
             'micr_draft': forms.TextInput(attrs={'class':'form-control'}),
             'date_draft': forms.TextInput(attrs={'class':'form-control','type':'date'}),
             'amt_draft': forms.NumberInput(attrs={'class':'form-control','type':'number'}),
+            'bank_draft': forms.Select(attrs={'class':'form-control'}),
             # 'status': forms.Select(attrs={'class':'form-control'}),
             # 'comment': forms.Textarea(attrs={'class':'form-control'}),
         }

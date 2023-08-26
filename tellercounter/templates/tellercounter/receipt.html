@@ -123,7 +123,7 @@
                         {% endif %}
                     </th>
                   </tr>
-                  {% if data.chequ_no or data.draft_no %}
+                  {% if data.cheque_no or data.draft_no %}
                   <tr>
                     <th scope="col">
                         {% if data.mode_donation == "Cheque" %}
@@ -138,13 +138,17 @@
                     </th>
                     <th scope="col">
                         {% if data.mode_donation == "Cheque" %}
+                        {% if data.bank_cheque %}
                         Cheque Bank: <span class="data-receipt">
-                            {{ data.micr_cheque }}
+                            {{ data.bank_cheque }}
                             </span>
+                        {% endif %}
                         {% elif data.mode_donation == "Draft" %}
+                        {% if data.bank_draft %}
                         Draft Bank: <span class="data-receipt">
-                            {{ data.micr_draft }}
+                            {{ data.bank_draft }}
                             </span>
+                        {% endif %}
                         {% endif %}
                     </th>
                   </tr>
